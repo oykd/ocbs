@@ -6,8 +6,11 @@ Stretching and squeezing blocks with correct consider specific proportions and m
 
 Files: 
   index.html - demo 
+  
   ocbs.js - main code
+  
   lackey.js - some helpers
+  
   style.css
 
 Demo here: http://defiler.ru/demo/ocbs/
