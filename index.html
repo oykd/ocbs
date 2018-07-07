@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+
+		<title>Open-close blocks structure Demo v 1.1</title>
+	
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+
+		<link rel="shortcut icon" href="i/icon.png" type="image/x-icon" />	
+		<link rel="stylesheet" href="style.css">
+	
+		<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="lackey.js"></script>
+		<script type="text/javascript" src="ocbs.js"></script>
+		
+</head>
+
+<body>
+
+	<center>
+		<div id="ocbs-structure" class="ocbs">
+			<div id="header" class="ocbs-header">
+				Open-close blocks structure Demo v 1.0
+			</div>
+				
+			<div class="ocbs-row clearfix">
+				<div class="ocbs-block">
+					<div class="ocbs-close header-button">[x]</div>
+					Cat content
+				</div>
+				<div class="ocbs-block">
+					<div class="ocbs-close header-button">[x]</div>
+					Dog content <br/>
+					This block has minimal width = 350px, check effect by window resizing
+				</div>
+				<div class="ocbs-block">
+					<div class="ocbs-close header-button">[x]</div>
+					Fish content <br/>
+					This block has minimal width = 500px, check effect by window resizing
+				</div>
+			</div>
+		
+			<div class="ocbs-row clearfix">		
+				<div class="ocbs-block bordered">
+					<div class="ocbs-close header-button">[x]</div>
+					Elephant content <br/>
+					Close this for vertical animation
+				</div>
+			</div>
+		
+			<div class="ocbs-row clearfix">
+				<div class="ocbs-block bordered">
+					<div class="ocbs-close header-button">[x]</div>
+					Seal content <br/>
+					Current state of structure could be saved in cookies (f5)
+				</div>
+				<div class="ocbs-block bordered">
+					<div class="ocbs-close header-button">[x]</div>
+					Dolphin content <br/>
+					Close button could be anywhere inside the block : <u class="ocbs-close">close</u>
+				</div>
+			</div>
+			
+			<div id="ocbs-panel" class="ocbs-header clearfix">
+				<< << Open blocks here
+					<div class="ocbs-toggle">Cat</div>
+					<div class="ocbs-toggle">Dog</div>
+					<div class="ocbs-toggle">Fish</div>
+			
+					<div class="ocbs-toggle">Elephant</div>
+			
+					<div class="ocbs-toggle">Seal</div>
+					<div class="ocbs-toggle">Dolphin</div>
+			</div>
+		</div>
+	</center>
+
+</body>
+
+</html>
+
