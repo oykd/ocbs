@@ -1,0 +1,101 @@
+/*
+	...
+*/
+
+
+
+body {
+	background: url(i/bg.jpg) no-repeat top center #000;
+}
+
+@font-face {
+	font-family: 'DOS'; 
+	src: url('dos.ttf'); 
+}
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+.container {
+	padding: 5px;
+}
+
+.bordered {
+	border: 1px solid #aaaaaa;
+}
+
+#ocbs-panel {
+
+}
+
+.ocbs-header {
+	color: #000000;
+	background-color: #00aaaa;
+	padding: 2px 0px 2px 0px;
+	font-family: 'DOS';
+	width: 100%;
+}
+
+#ocbs-structure {
+	margin-top: 120px;
+	width:92%;
+	min-width:1000px;
+	background-color: #003377;
+}
+
+.ocbs-toggle {
+	color: #ffff00;
+	margin-left: 20px;
+	float: left;
+	cursor: pointer;
+}
+
+.ocbs-railroad {
+	
+}
+
+.ocbs-train {
+	
+}
+
+.ocbs-row {
+	
+}
+
+.ocbs-block {
+	background-color: #0000aa;
+	color: #ffffff;
+	font-family: 'DOS';
+	float: left;
+	margin: 6px;
+	padding: 20px 10px 20px 10px;
+	outline: 6px solid #0000aa;
+	border-top: 1px solid #aaaaaa;
+	border-bottom: 1px solid #aaaaaa;
+	border-left: 2px solid #aaaaaa;
+	border-right: 2px solid #aaaaaa;
+	position: relative;
+}
+
+.header-button {
+	position: absolute;
+	background-color: #0000aa;
+	color: #aaaaaa;
+	top: -6px;
+	right: 20px;
+	padding: 2px;
+}
+
+.ocbs-close {
+	cursor: pointer;
+}
+
+.ocbs-stick {
+	
+}
+
