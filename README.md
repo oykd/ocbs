@@ -5,6 +5,7 @@ Simple html structure with ability to close & open divs.
 Stretching and squeezing blocks with correct consider specific proportions and minimal width for every block. 
 
 Files: 
+
   index.html - demo 
   
   ocbs.js - main code
