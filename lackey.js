@@ -58,9 +58,11 @@ class Lackey {
 //# 01. >> Math >>	
 
 	/* Get array sum */
-	static arraySum(arr) {
+	static arraySum(arr, x1, x2) {
+		if (!x1) x1 = 0;
+		if (!x2) x2 = arr.length - 1;
 		var sum = 0;
-		for (var i = 0; i < arr.length; i++)
+		for (var i = x1; i <= x2; i++)
 			sum += arr[i] * 1.0;
 		return sum;
 	}

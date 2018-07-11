@@ -3,7 +3,7 @@
 	OCBS 
 		© 2018 onyokneesdog
 		
-	last edit: 02.07.2018	
+	last edit: 11.07.2018	
 	*using lackey.js
 */
 
@@ -46,7 +46,10 @@ $.fn.ocbs = function(settings) {
 		min: '',
 		display: '',
 		refreshOnResize: true,
-		toggleCssType: ''
+		closeTiming: [500, 300, 300, 300],
+		openTiming: [350, 300, 200, 300],
+		trains: false,
+		trainTiming: 300
 	}
 	settings = $.extend(true, {}, defaults, settings);
 	var lock = false;
@@ -79,10 +82,10 @@ $.fn.ocbs = function(settings) {
 	}
 	
 	/* Change arrays from settings */
-	elevation 			= (settings.height != '') 			? Lackey.stringToMatrix(settings.height) 		: elevation;
-	blockProportion 	= (settings.proportion != '') 	? Lackey.stringToMatrix(settings.proportion) : blockProportion;
-	blockMinWidth 		= (settings.min != '') 				? Lackey.stringToMatrix(settings.min) 			: blockMinWidth;
-	blockDisplay 		= (settings.display != '') 		? Lackey.stringToMatrix(settings.display) 	: blockDisplay;
+	elevation = (settings.height != '') ? Lackey.stringToMatrix(settings.height) : elevation;
+	blockProportion = (settings.proportion != '') ? Lackey.stringToMatrix(settings.proportion) : blockProportion;
+	blockMinWidth = (settings.min != '') ? Lackey.stringToMatrix(settings.min) : blockMinWidth;
+	blockDisplay = (settings.display != '') ? Lackey.stringToMatrix(settings.display) : blockDisplay;
 	
 	/* Read cookies */	
 	if (settings.useCookies)
@@ -114,8 +117,8 @@ $.fn.ocbs = function(settings) {
 		var stick = $(structure).find('.ocbs-stick').eq(y);
 		/* Stage I */
 		$(toggle).css('visibility', 'visible');
-		$(toggle).animate({ opacity: 1 }, 500);
-		$(block).animate({ opacity: 0 }, 300);
+		$(toggle).animate({ opacity: 1 }, settings.closeTiming[0]); //500
+		$(block).animate({ opacity: 0 }, settings.closeTiming[1]); //300
 		/* Stage II */
 		window.setTimeout(function() {
 			$(block).stop(true, true);
@@ -126,28 +129,25 @@ $.fn.ocbs = function(settings) {
 			$(block).after(tdiv);
 			$(tdiv).css('width', $(block).outerWidth());
 			$(block).css('display', 'none');
-			$(tdiv).animate({	width: 0	}, 300);
-		}, 300);
+			$(tdiv).animate({	width: 0	}, settings.closeTiming[2]); //300
+		}, settings.closeTiming[1]); //300
 		/* Stage III */
 		window.setTimeout(function() {
 			$('#ocbs-temp').stop(true, true);
 			$('#ocbs-temp').remove();
 			$(toggle).stop(true,true);
-			var t = 0;
-			for (var i = 0; i < blockDisplay[y].length; i++)
-				t = t + blockDisplay[y][i];
-			if (t == 0){
-				$(stick).animate({ height: 0 }, 300);
-			}else{
-				//animateTrains(z, z + 1);
+			if (!Lackey.arraySum(blockDisplay[y])) {
+				$(stick).animate({ height: 0 }, settings.closeTiming[3]); //300
+			} else if (settings.trains) {
+				trains(block);
 			}
-		}, 600);
+		}, Lackey.arraySum(settings.closeTiming, 1, 2)); //600
 		/* Stage IV */
 		window.setTimeout(function() {
 			$(stick).stop(true, true);
 			rebuildRow(x, y);
 			lock = false;
-		}, 900);
+		}, Lackey.arraySum(settings.closeTiming, 1, 3)); //900
 		
 	});
 	
@@ -170,15 +170,12 @@ $.fn.ocbs = function(settings) {
 		var toggle = this;
 		var stick = $(structure).find('.ocbs-stick').eq(y);
 		/* Stage I */
-		$(toggle).animate({ opacity: 0 }, 350);
-		var t = 0;
-		for (var i = 0; i < blockDisplay[y].length; i++)
-			t = t + blockDisplay[y][i];
-		if (t == 1){
+		$(toggle).animate({ opacity: 0 }, settings.openTiming[0]); //350
+		if (Lackey.arraySum(blockDisplay[y]) == 1) {
 			var stickHeight = elevation[y] + getVerEdge(block);
-			$(stick).animate({ height: stickHeight }, 300);
-		}else{
-			//animateTrains(z, z + 1);
+			$(stick).animate({ height: stickHeight }, settings.openTiming[1]); //300
+		} else if (settings.trains) {
+			trains(block);
 		}
 		/* Stage II */
 		window.setTimeout(function() {
@@ -192,20 +189,20 @@ $.fn.ocbs = function(settings) {
 			$(tdiv).css('height', '1px');
 			var nw = rebuildRow(x, y);
 			$(block).after(tdiv);
-			$(tdiv).animate({	width: nw }, 200);
-		}, 350);
+			$(tdiv).animate({	width: nw }, settings.openTiming[2]); //200
+		}, settings.openTiming[1]); //300 (350)
 		/* Stage III */
 		window.setTimeout(function() {
 			$('#ocbs-temp').stop(true, true);
 			$('#ocbs-temp').remove();
 			$(block).css('display', 'block');
-			$(block).animate({ opacity: 1 }, 300);
-		}, 550);
+			$(block).animate({ opacity: 1 }, settings.openTiming[3]); //300
+		}, Lackey.arraySum(settings.closeTiming, 1, 2)); //500 (550)
 		/* Stage IV */
 		window.setTimeout(function() {
 			$(block).stop(true, true);
 			lock = false;
-		}, 900);
+		}, Lackey.arraySum(settings.closeTiming, 1, 3)); //800 (900)
 		
 	});
 	
@@ -317,6 +314,25 @@ $.fn.ocbs = function(settings) {
 		}
 	}
 	
+	function trains(block) {
+		var r1 = $('<div></div>');	$(r1).addClass('ocbs-railroad');
+		var r2 = $('<div></div>');	$(r2).addClass('ocbs-railroad');
+		$(block).parents('.ocbs-row').after(r1);
+		$(block).parents('.ocbs-row').before(r2);
+		var t1 = $('<div></div>');	$(t1).addClass('ocbs-train');
+		var t2 = $('<div></div>');	$(t2).addClass('ocbs-train');
+		$(r1).append(t1);
+		$(r2).append(t2);
+		$(t1).animate({ left: $(r1).width() - $(t1).width() }, settings.trainTiming);
+		$(t2).animate({ left: $(r2).width() - $(t2).width() }, settings.trainTiming);
+		window.setTimeout(function(){
+			$(t1).stop(true, true);
+			$(t1).stop(true, true);
+			$(r1).remove();
+			$(r2).remove();
+		}, settings.trainTiming);
+	}
+	
 	/* Stretch & squeeze blocks correctly on window resize */
 	$(window).resize(function() {
 		if (settings.refreshOnResize)	refreshStructure();
@@ -325,29 +341,3 @@ $.fn.ocbs = function(settings) {
 };
 
 })(jQuery);
-
-
-/*
-
-
-function animateTrains(t1,t2){
-	ww = window.innerWidth;
-	if (ww < 1000) { ww = 1040; }
-	$('#train'+t1).css('display', 'block');
-	$('#train'+t2).css('display', 'block');
-	$('#train'+t1).css('left', '0px');
-	$('#train'+t2).css('left', '0px');
-	$('#train'+t1).animate({
-		left: Math.floor(ww * 0.9) - 50
-	}, 350);
-	$('#train'+t2).animate({
-		left: Math.floor(ww * 0.9) - 50
-	}, 350);
-	window.setTimeout(function(){
-		$('#train'+t1).css('display', 'none');
-		$('#train'+t2).css('display', 'none');
-	}, 350);
-}
-
-
-*/
