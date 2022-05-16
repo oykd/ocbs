@@ -14,4 +14,4 @@ Files:
   
   style.css
 
-Demo here: http://defiler.ru/demo/ocbs/
+
